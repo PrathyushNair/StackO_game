@@ -65,9 +65,12 @@
             div1.addEventListener("click",()=>{
             let k=div1.id
             sum--
-              document.querySelector(`#${k}`).remove()
-              document.querySelector(".tottiles").innerText=sum
-              addword(document.querySelector(`#${k}`).innerText,word)
+               addword(document.querySelector(`#${k}`).innerText,word)
+               
+               document.querySelector(`#${k}`).remove()
+               
+               document.querySelector(".tottiles").innerText=sum
+              
             })
             div1.append(p)
             indidiv.append(div1)
@@ -176,6 +179,7 @@ function handledelete()
     document.querySelector(".footmid").innerText=""
     document.querySelector(".footleft").innerHTML=""
     document.querySelector(".footright").innerHTML=""
+    word.splice(0,word.length)
 }
 let id;
 function timer()
