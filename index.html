@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/24c494a6b6.js"
+    crossorigin="anonymous" ></script>
+    <title>Document</title>
+</head>
+<body>
+   <div class="main">
+    <div class="nav">
+        <div class="timeindicator"style="font-size:30px;font-weight: 600;">99</div>
+        <div  style="font-size:30px;font-weight: 600;">0</div>
+        <div style="text-align: center;display: block;;font-weight: 600;">
+            <div class="tottiles"></div>
+            <div>Tiles Left</div>
+        </div>
+    </div>
+    <div class="gridforletters">
+       
+       
+    </div>
+    <div onclick="handledelete()"class="foot">
+        <div class="footleft"></div>
+        <div  class="footmid"></div>
+        <div onclick="handlesubmit(finalwords,word)"class="footright"></div>
+    </div>
+</body>
+</html>
+<script>
+    
+    let tottiles;
+    let maingrid=document.querySelector(".gridforletters")
+     let sum=0
+   
+     let vow={1:"A",2:"E",3:"I",4:"O",5:"U"}
+     let conso={6:"B",7:"C",8:"F",9:"G",10:"H",11:"L",12:"M",13:"N",14:"R",15:"S",16:"T",17:"V",18:"W",19:"Y",20:"Z"}
+     let word=[]
+     let finalwords=JSON.parse(localStorage.getItem("final"))||[]
+    for(let i=1;i<=20;i++)
+    {  let indidiv=document.createElement("div")
+        indidiv.setAttribute("class","indi")
+        indidiv.style.position="relative"
+        let limit= Math.floor(Math.random() * (4 - 1) + 1)
+        
+        sum=sum+limit
+        if(i<=5)
+        {
+            for(let j=0;j<=limit;j++)
+        {
+            let div1=document.createElement("div")
+            div1.setAttribute("id","box"+`${i}`+""+`${j}`)
+            div1.setAttribute("class","indidivcard")
+            let p=document.createElement("p")
+            p.style.marginTop="-1%"
+            p.style.textAlign="right"
+            p.style.fontSize="small"
+            div1.innerText=vow[i]
+            div1.style.bottom=`${7*j}%`
+            div1.style.zIndex=`${j+20}`
+            p.innerText="1"
+            div1.addEventListener("click",()=>{
+            let k=div1.id
+            sum--
+              document.querySelector(`#${k}`).remove()
+              document.querySelector(".tottiles").innerText=sum
+              addword(document.querySelector(`#${k}`).innerText,word)
+            })
+            div1.append(p)
+            indidiv.append(div1)
+           
+        }
+        maingrid.append(indidiv)
+        }
+        else
+        {
+        for(let j=0;j<=limit;j++)
+        {   let div1=document.createElement("div")
+            let p=document.createElement("p")
+            p.style.marginTop="-2%"
+            p.style.textAlign="right"
+            p.style.fontSize="small"
+            div1.setAttribute("id","box"+`${i}`+""+`${j}`)
+            div1.setAttribute("class","indidivcard")
+           
+            div1.innerText=conso[i]
+            if(conso[i]=="L"||conso[i]=="N"||conso[i]=="S"||conso[i]=="T"||conso[i]=="R")
+            {
+                p.innerText="1"
+            }
+            else if(conso[i]=="D"||conso[i]=="G"){
+                if(conso[i]=="G")
+                {
+                    div1.style.backgroundColor="#3b8f9d"
+                }
+                p.innerText="2"
+            }
+            else if(conso[i]=="B"||conso[i]=="C"||conso[i]=="M"||conso[i]=="P"){
+                if(conso[i]=="B")
+                {
+                    div1.style.backgroundColor="#f69500"
+                }
+                p.innerText="3"
+            }
+            else if(conso[i]=="F"||conso[i]=="H"||conso[i]=="V"||conso[i]=="W"||conso[i]=="Y"){
+                if(conso[i]=="F")
+                {
+                    div1.style.backgroundColor="#05a701"
+                }
+                p.innerText="4"
+            }
+            else if(conso[i]=="K"){
+                div1.style.backgroundColor="#05a701"
+               
+                p.innerText="5"
+            }
+            else if(conso[i]=="J"||conso[i]=="X"){
+                p.innerText="8"
+            }
+            else if(conso[i]=="Q"||conso[i]=="Z"){
+                p.innerText="10"
+            }
+            div1.style.bottom=`${7*j}%`
+            div1.style.zIndex=`${j+20}`
+           
+            div1.addEventListener("click",()=>{
+               let k=div1.id
+               sum--
+               addword(document.querySelector(`#${k}`).innerText,word)
+               
+               document.querySelector(`#${k}`).remove()
+               
+               document.querySelector(".tottiles").innerText=sum
+               
+            })
+            div1.append(p)
+            indidiv.append(div1)
+        }
+        maingrid.append(indidiv)
+        }
+         document.querySelector(".tottiles").innerText=sum
+}
+function display(arr)
+{   let w=""
+    arr.map((el)=>{
+       w=w+el
+
+    })
+   
+        document.querySelector(".footleft").innerHTML=`<i class="fa-solid fa-trash"></i>`
+        document.querySelector(".footright").innerHTML=`<i class="fa-solid fa-check"></i>`
+   
+    document.querySelector(".footmid").innerText=w
+}
+function addword(params,word){
+word.push(params[0])
+console.log(word)
+display(word)
+}
+function handlesubmit(finalwords,word)
+{  
+    finalwords.push( document.querySelector(".footmid").innerText)
+    localStorage.setItem("final",JSON.stringify(finalwords))
+    document.querySelector(".footmid").innerText=""
+    document.querySelector(".footleft").innerHTML=""
+    document.querySelector(".footright").innerHTML=""
+    word.splice(0,word.length)
+
+} 
+function handledelete()
+{
+   
+    document.querySelector(".footmid").innerText=""
+    document.querySelector(".footleft").innerHTML=""
+    document.querySelector(".footright").innerHTML=""
+}
+let id;
+function timer()
+{   
+    
+    id=setInterval(()=>{
+        document.querySelector(".timeindicator").innerText=document.querySelector(".timeindicator").innerText-1
+        if(document.querySelector(".timeindicator").innerText==0)
+    {
+       clearInterval(id)
+       
+    }
+    },1000)
+    
+
+}
+timer()
+</script>
